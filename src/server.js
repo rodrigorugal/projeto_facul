@@ -6,7 +6,6 @@ const DB_PATH = './data/database.sqlite';
 
 const db = new sqlite3.Database(DB_PATH, (err) => {
     if (err) return console.error("Erro ao conectar DB:", err.message);
-    console.log('Conectado ao SQLite.');
 
     db.run(`CREATE TABLE IF NOT EXISTS produtos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
