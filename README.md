@@ -1,127 +1,195 @@
-# 🛠️ API CRUD de Usuários e Produtos  
-### Node.js + Express + SQLite + Arquitetura Modular
+🛠️ API CRUD de Usuários e Produtos
+Node.js + Express + SQLite + Arquitetura Modular + Testes Automatizados
+📑 Sumário
 
----
+Descrição
 
-# 📑 Sumário
-1. [Descrição](#📝-descrição)  
-2. [Tecnologias](#🚀-tecnologias)  
-3. [Como Rodar](#▶️-como-rodar)  
-4. [Estrutura](#📁-estrutura)  
-5. [Rotas](#🌐-rotas)  
-6. [Validações](#🔍-validações)  
-7. [Personas](#🧑‍💼-personas)  
-8. [User Stories](#📘-user-stories)  
-9. [MVP](#🔥-mvp)  
-10. [Kanban](#📋-kanban)
+Tecnologias
 
----
+Como Rodar a API
 
-# 📝 Descrição
-API criada para fins acadêmicos, com arquitetura modular, endpoints CRUD completos e validações robustas para **Usuários** e **Produtos**.
+Estrutura do Projeto
 
----
+Banco de Dados
 
-# 🚀 Tecnologias
-- Node.js  
-- Express  
-- SQLite3  
-- Nodemon  
-- Git + GitHub  
+Rotas
 
----
+Validações
 
-# ▶️ Como Rodar
+Personas
 
-```bash
+User Stories
+
+MVP
+
+Kanban
+
+Testes Automatizados
+
+Como Rodar os Testes
+
+📝 Descrição
+
+API criada para fins acadêmicos, seguindo arquitetura modular (controllers, services, routes, validators).
+Permite operações completas de CRUD para Usuários e Produtos, mantendo validações robustas e um design escalável.
+
+Agora o projeto também possui testes automatizados de unidade e integração, utilizando Jest e Supertest.
+
+🚀 Tecnologias
+
+Node.js
+
+Express
+
+SQLite3
+
+Jest & Supertest
+
+Nodemon
+
+Git + GitHub
+
+▶️ Como Rodar a API
 npm install
 npm run dev
+
 
 URL Base:
 
 http://localhost:3000/api
 
+📁 Estrutura do Projeto
 src/
+ ├─ app.js            # App express (usado também nos testes)
+ ├─ server.js         # Servidor que sobe o Express
  ├─ controllers/
  ├─ routes/
  ├─ services/
  ├─ validators/
  ├─ database/
- └─ server.js
+ └─ ...
+tests/
+ ├─ integration/      # Testes de integração (Supertest)
+ └─ unit/             # Testes unitários (Jest)
 
-```
+📦 Banco de Dados
+
+SQLite3 armazenado em src/database.
+
+A camada de banco é acessada por funções genéricas:
+
+run(sql, params)
+
+get(sql, params)
+
+all(sql, params)
 
 🌐 Rotas
 Produtos
-Método	Rota
-POST	/api/products
-GET	/api/products
-GET	/api/products/:id
-PUT	/api/products/:id
-DELETE	/api/products/:id
+Método	Rota	Descrição
+POST	/api/products	Criar produto
+GET	/api/products	Listar produtos
+GET	/api/products/:id	Buscar por ID
+PUT	/api/products/:id	Atualizar
+DELETE	/api/products/:id	Remover
 Usuários
-Método	Rota
-POST	/api/users
-GET	/api/users
-GET	/api/users/:id
-PUT	/api/users/:id
-DELETE	/api/users/:id
+Método	Rota	Descrição
+POST	/api/users	Criar usuário
+GET	/api/users	Listar usuários
+GET	/api/users/:id	Buscar por ID
+PUT	/api/users/:id	Atualizar
+DELETE	/api/users/:id	Remover
 🔍 Validações
+Usuários
+
+Nome mínimo de 2 caracteres
+
+Email obrigatório e válido
+
+Atualização permite envio parcial (PATCH-like)
+
+Produtos
 
 Nome mínimo 2 caracteres
-
-Email válido
 
 Preço ≥ 0
 
 Estoque inteiro ≥ 0
 
-IDs devem ser inteiros positivos
+Update também permite campos parciais
 
 🧑‍💼 Personas
 
-Ver arquivo: PERSONAS.md
+As personas completas estão no arquivo:
+📄 PERSONAS.md
 
 📘 User Stories
 
-Ver arquivo: USER_STORIES.md
+Arquivo:
+📄 USER_STORIES.md
 
 🔥 MVP
 
-Ver arquivo: MVP.md
+Arquivo:
+📄 MVP.md
 
 📋 Kanban
 
-Ver arquivo: KANBAN.md
+Arquivo:
+📄 KANBAN.md
 
+🧪 Testes Automatizados
 
----
+O projeto possui testes automatizados utilizando:
 
-# 📁 **3. PERSONAS (4 personas)** — `PERSONAS.md`
+✔ Jest — Testes Unitários
 
-*(Já preparado anteriormente; versão final incluída aqui)*
+Validações (validators) são testadas isoladamente.
 
-```md
-# 👥 Personas do Projeto
+✔ Supertest — Testes de Integração
 
-## 1) Marcos Andrade — Gerente de Operações
-Objetivo: Centralizar informações  
-Dor: Dados inconsistentes  
-Motivação: Eficiência operacional  
+Testam endpoints reais da API (CRUD de Users e Products).
 
-## 2) Carla Menezes — Analista de Vendas  
-Objetivo: Consultas rápidas  
-Dor: Falta de filtros  
-Motivação: Agilidade  
+✔ Reset do Banco Antes de Cada Teste
 
-## 3) Eduardo Lima — Coordenador de TI  
-Objetivo: Integrar sistemas  
-Dor: APIs instáveis  
-Motivação: Arquitetura limpa  
+Cada teste limpa as tabelas usando:
 
-## 4) Fernanda Rocha — Supervisora de Estoque  
-Objetivo: Controle de estoque  
-Dor: Estoque negativo  
-Motivação: Segurança operacional  
+await run('DELETE FROM users');
+await run('DELETE FROM products');
 
-```
+Estrutura dos testes
+tests/
+ ├─ unit/
+ │   ├─ userValidator.test.js
+ │   └─ productValidator.test.js
+ └─ integration/
+     ├─ users.test.js
+     └─ products.test.js
+
+▶️ Como Rodar os Testes
+1. Instalar dependências
+npm install
+
+2. Rodar todos os testes
+npm test
+
+3. Rodar com coverage
+npm test -- --coverage
+
+🎯 Conclusão
+
+Este projeto agora possui:
+
+Arquitetura modular
+
+CRUD completo
+
+Banco SQLite
+
+Validação robusta
+
+Testes automatizados reais e estruturados
+
+Código organizado para escalabilidade
+
+Documentação clara
