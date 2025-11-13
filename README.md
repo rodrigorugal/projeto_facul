@@ -36,10 +36,10 @@ API criada para fins acadêmicos, com arquitetura modular, endpoints CRUD comple
 ```bash
 npm install
 npm run dev
-
+```
 URL Base:
 
-http://localhost:3000/api
+`http://localhost:3000/api`
 
 src/
  ├─ controllers/
@@ -120,4 +120,5 @@ Motivação: Arquitetura limpa
 ## 4) Fernanda Rocha — Supervisora de Estoque  
 Objetivo: Controle de estoque  
 Dor: Estoque negativo  
-Motivação: Segurança operacional  
+Motivação: Segurança operacional
+```
