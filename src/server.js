@@ -1,24 +1,22 @@
-import app from './app.js';
-import sqlite3 from 'sqlite3';
+// src/server.js
+const express = require('express');
+const app = express();
+const routes = require('./routes');
 
-const PORT = 3001;
-const DB_PATH = './data/database.sqlite';
+// middlewares
+app.use(express.json());
 
-const db = new sqlite3.Database(DB_PATH, (err) => {
-    if (err) return console.error("Erro ao conectar DB:", err.message);
+// rotas
+app.use('/api', routes);
 
-    db.run(`CREATE TABLE IF NOT EXISTS produtos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        preco REAL,
-        descricao TEXT
-    )`, (err) => {
-        if (err) console.error("Erro ao criar tabela:", err.message);
-    });
+app.get('/', (req, res) => {
+  res.json({
+    message: 'API de Gerenciamento de Estoque e Usuários (CRUD Core)',
+  });
 });
 
-app.set('db', db);
-
+// porta
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando na porta ${PORT}`);
 });

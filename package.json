@@ -1,13 +1,20 @@
 {
-  "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10",
-    "sqlite3": "^5.1.7"
-  },
+  "name": "api-crud-usuarios-produtos",
+  "version": "1.0.0",
+  "description": "API de Gerenciamento de Estoque e Usuários (CRUD Core)",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.0",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
