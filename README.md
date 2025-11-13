@@ -42,11 +42,17 @@ URL Base:
 `http://localhost:3000/api`
 
 src/
+
  ├─ controllers/
+ 
  ├─ routes/
+ 
  ├─ services/
+ 
  ├─ validators/
+ 
  ├─ database/
+ 
  └─ server.js
 
 🌐 Rotas
