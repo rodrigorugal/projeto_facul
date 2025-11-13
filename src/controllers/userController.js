@@ -1,11 +1,29 @@
 // src/controllers/userController.js
 const userService = require('../services/userService');
+const {
+  validateCreateUser,
+  validateUpdateUser,
+} = require('../validators/userValidator');
+
+function parseId(paramId) {
+  const id = Number(paramId);
+  if (!Number.isInteger(id) || id <= 0) {
+    return null;
+  }
+  return id;
+}
 
 async function create(req, res) {
   try {
+    const { valid, errors } = validateCreateUser(req.body);
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
+
     const user = await userService.createUser(req.body);
     return res.status(201).json(user);
   } catch (err) {
+    // Pode ser erro de UNIQUE email, etc
     return res.status(400).json({ error: err.message });
   }
 }
@@ -21,7 +39,11 @@ async function getAll(req, res) {
 
 async function getById(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const user = await userService.getUserById(id);
 
     if (!user) {
@@ -36,7 +58,16 @@ async function getById(req, res) {
 
 async function update(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
+    const { valid, errors } = validateUpdateUser(req.body);
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
+
     const updated = await userService.updateUser(id, req.body);
 
     if (!updated) {
@@ -51,7 +82,11 @@ async function update(req, res) {
 
 async function remove(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const deleted = await userService.deleteUser(id);
 
     if (!deleted) {

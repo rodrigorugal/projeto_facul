@@ -1,8 +1,26 @@
 // src/controllers/productController.js
 const productService = require('../services/productService');
+const {
+  validateCreateProduct,
+  validateUpdateProduct,
+} = require('../validators/productValidator');
+
+function parseId(paramId) {
+  const id = Number(paramId);
+  if (!Number.isInteger(id) || id <= 0) {
+    return null;
+  }
+  return id;
+}
 
 async function create(req, res) {
   try {
+    const { valid, errors } = validateCreateProduct(req.body);
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
+
+    // Se stock não vier, deixamos o service/banco assumir o default
     const product = await productService.createProduct(req.body);
     return res.status(201).json(product);
   } catch (err) {
@@ -21,7 +39,11 @@ async function getAll(req, res) {
 
 async function getById(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const product = await productService.getProductById(id);
 
     if (!product) {
@@ -36,7 +58,16 @@ async function getById(req, res) {
 
 async function update(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
+    const { valid, errors } = validateUpdateProduct(req.body);
+    if (!valid) {
+      return res.status(400).json({ errors });
+    }
+
     const updated = await productService.updateProduct(id, req.body);
 
     if (!updated) {
@@ -51,7 +82,11 @@ async function update(req, res) {
 
 async function remove(req, res) {
   try {
-    const { id } = req.params;
+    const id = parseId(req.params.id);
+    if (!id) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
     const deleted = await productService.deleteProduct(id);
 
     if (!deleted) {

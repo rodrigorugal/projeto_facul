@@ -1,11 +1,14 @@
 📦 API de Gerenciamento de Usuários e Produtos
-CRUD completo com Node.js + Express + SQLite seguindo arquitetura Routes → Controllers → Services
+CRUD completo com Node.js + Express + SQLite + Validações de Entrada
 
-Este projeto implementa uma API simples e funcional para gerenciar Usuários e Produtos, com persistência em SQLite e estrutura modularizada para facilitar manutenção, estudo e evolução.
+Este projeto implementa uma API modularizada seguindo arquitetura Routes → Controllers → Services, utilizando SQLite como banco local.
+Agora com validações robustas, garantindo a integridade dos dados enviados pelo cliente.
 
 📑 Índice
 
 ✨ Funcionalidades
+
+🔒 Validações Implementadas
 
 🚀 Tecnologias Utilizadas
 
@@ -22,6 +25,8 @@ Usuários
 Produtos
 
 📬 Exemplos de Requisição
+
+⚠️ Exemplos de Erros de Validação
 
 📄 Licença
 
@@ -50,6 +55,41 @@ Atualizar
 
 Remover
 
+🔒 Validações Implementadas
+
+A API agora possui validações completas:
+
+✔️ Usuários
+
+name obrigatório, mínimo 2 caracteres
+
+email obrigatório e com formato válido
+
+Atualizações aceitam apenas campos válidos
+
+✔️ Produtos
+
+name obrigatório, mínimo 2 caracteres
+
+price deve ser número ≥ 0
+
+stock deve ser inteiro ≥ 0 (opcional na criação)
+
+✔️ Parâmetros da URL
+
+IDs são validados
+
+Apenas inteiros positivos são aceitos
+
+Caso contrário → 400 - ID inválido
+
+📌 Erros retornam JSON no formato:
+{
+  "errors": [
+    "Mensagem indicando o problema"
+  ]
+}
+
 🚀 Tecnologias Utilizadas
 
 Node.js
@@ -58,7 +98,9 @@ Express
 
 SQLite3
 
-Nodemon (ambiente de desenvolvimento)
+Nodemon
+
+Arquitetura MVC (adaptado)
 
 📂 Estrutura do Projeto
 api-crud-usuarios-produtos/
@@ -76,14 +118,13 @@ api-crud-usuarios-produtos/
     ├── services
     │   ├── productService.js
     │   └── userService.js
+    ├── validators
+    │   ├── productValidator.js
+    │   └── userValidator.js
     └── database
         └── db.js
 
 🗄️ Banco de Dados
-
-A API utiliza SQLite, criado automaticamente ao iniciar o servidor.
-Tabelas:
-
 users
 Campo	Tipo	Descrição
 id	INTEGER PK	Identificador único
@@ -101,34 +142,29 @@ created_at	DATETIME	Data de criação
 1️⃣ Instale as dependências
 npm install
 
-2️⃣ Execute o projeto
+2️⃣ Execute o servidor
 
-Ambiente de desenvolvimento (com reinício automático):
+Ambiente de desenvolvimento:
 
 npm run dev
 
 
-Ou modo normal:
+Modo normal:
 
 npm start
 
-3️⃣ Acesse o servidor
-http://localhost:3000
-
-
-A API estará acessível no prefixo:
-
+3️⃣ Endereço da API
 http://localhost:3000/api
 
 📌 Rotas da API
-Usuários
+👤 Usuários
 Método	Rota	Descrição
 POST	/api/users	Criar usuário
 GET	/api/users	Listar todos
 GET	/api/users/:id	Buscar por ID
 PUT	/api/users/:id	Atualizar usuário
 DELETE	/api/users/:id	Remover usuário
-Produtos
+📦 Produtos
 Método	Rota	Descrição
 POST	/api/products	Criar produto
 GET	/api/products	Listar todos
@@ -137,53 +173,54 @@ PUT	/api/products/:id	Atualizar produto
 DELETE	/api/products/:id	Remover produto
 📬 Exemplos de Requisição
 ➕ Criar usuário
-
 POST /api/users
-
 {
   "name": "João Silva",
   "email": "joao@example.com"
 }
 
 ➕ Criar produto
-
 POST /api/products
-
 {
   "name": "Mouse Gamer",
   "price": 199.90,
   "stock": 12
 }
 
-🔍 Buscar produto por ID
-
-GET /api/products/1
-
-✏️ Atualizar usuário
-
-PUT /api/users/1
-
+✏️ Atualizar produto
+PUT /api/products/1
 {
-  "name": "João Santos"
+  "price": 149.90
 }
 
-❌ Remover produto
+⚠️ Exemplos de Erros de Validação
+❌ Nome muito curto
+{
+  "errors": [
+    "Nome do produto é obrigatório e deve ter pelo menos 2 caracteres."
+  ]
+}
 
-DELETE /api/products/3
+❌ E-mail inválido
+{
+  "errors": [
+    "E-mail em formato inválido."
+  ]
+}
 
-🛠️ Possíveis Melhorias Futuras
+❌ Preço negativo
+{
+  "errors": [
+    "Preço, se informado, deve ser um número maior ou igual a 0."
+  ]
+}
 
-Login + autenticação JWT
-
-Paginação e filtros
-
-Middleware de validação (Joi/Zod)
-
-Dockerfile
-
-Testes automatizados (Jest)
+❌ ID inválido
+{
+  "error": "ID inválido"
+}
 
 📄 Licença
 
-Este projeto está licenciado sob a licença MIT.
-Sinta-se livre para usar, modificar e distribuir ⭐
+Este projeto está sob a licença MIT.
+Sinta-se livre para utilizar, modificar e evoluir este código.
