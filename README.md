@@ -49,6 +49,8 @@ src/
  ├─ database/
  └─ server.js
 
+```
+
 🌐 Rotas
 Produtos
 Método	Rota
@@ -121,3 +123,5 @@ Motivação: Arquitetura limpa
 Objetivo: Controle de estoque  
 Dor: Estoque negativo  
 Motivação: Segurança operacional  
+
+```
